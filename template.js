@@ -64,6 +64,7 @@ exports.template = function(grunt, init, done) {
         "grunt-validate-webapp": "~0.1.0",
         "grunt-webapp": "~0.3.0"
     };
+    props.npm_test = 'grunt test';
 
     // Files to copy (and process).
     var files = init.filesToCopy(props);
@@ -91,6 +92,7 @@ exports.template = function(grunt, init, done) {
         pkg.dependencies = {};
         delete pkg.devDependencies;
         delete pkg.title;
+        delete pkg.scripts;
 
         if(pkg.licenses) {
             pkg.license = pkg.licenses;
