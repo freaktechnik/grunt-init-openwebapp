@@ -1,0 +1,4 @@
+{
+  "locale/default/app.properties": "locale/{%= default_locale %}/app.properties",
+  "locale/default/manifest.json": "locale/{%= default_locale %}/manifest.json"
+}

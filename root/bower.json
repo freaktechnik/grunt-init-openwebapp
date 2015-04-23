@@ -1,0 +1,25 @@
+{
+  "name": "{%= name %}",
+  "version": "{%= version %}",
+  "homepage": "{%= homepage %}",
+  "authors": [
+    "{%= author_name %}"
+  ],
+  "description": "{%= description %}",
+  "main": "assets/index.html",
+  "keywords": [],
+  "license": {%= licenses.map(function(license) {
+                     return {type: license, url: props.homepage + '/blob/master/LICENSE-' + license};
+                 }) %}
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "dist"
+  ],
+  "dependencies": {
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "launch_path": "/index.html",
+  "default_locale": "{% default_locale %}",
+  "appcache_path": "/manifest.appcache",
+  "fullscreen": "true"
+}
