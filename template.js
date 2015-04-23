@@ -36,6 +36,7 @@ exports.template = function(grunt, init, done) {
     init.prompt('homepage'),
     init.prompt('licenses'),
     init.prompt('author_name'),
+    init.prompt('author_email'),
     init.prompt('author_url'),
     init.prompt('launch_path'),
     init.prompt('transifex_slug', ),
@@ -68,6 +69,27 @@ exports.template = function(grunt, init, done) {
 
     // Generate package.json file.
     init.writePackageJSON('package.json', props);
+
+    // Generate bower.json file.
+    init.writePackageJSON('bower.json', props, function(pkg, props) {
+        pkg.ignore = [
+            "**/.*",
+            "node_modules",
+            "bower_components",
+            "test",
+            "tests",
+            "dist"
+        ];
+        pkg.main = "assets/index.html";
+        pkg.private = true;
+        pkg.dependencies = {};
+        delete pkg.devDependencies;
+
+        if(pkg.licenses) {
+            pkg.license = pkg.licenses;
+            delete pkg.licenses;
+        }
+    });
 
     // All done!
     done();
