@@ -39,7 +39,7 @@ exports.template = function(grunt, init, done) {
     init.prompt('author_email'),
     init.prompt('author_url'),
     init.prompt('launch_path'),
-    init.prompt('transifex_slug', ),
+    init.prompt('transifex_slug'),
     init.prompt('default_locale', 'en')
   ], function(err, props) {
     props.keywords = [];
