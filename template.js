@@ -30,15 +30,17 @@ exports.template = function(grunt, init, done) {
   init.process({}, [
     // Prompt for these values.
     init.prompt('name'),
+    init.prompt('title'),
     init.prompt('description'),
     init.prompt('version'),
     init.prompt('repository'),
+    init.prompt('bugs'),
     init.prompt('homepage'),
     init.prompt('licenses'),
     init.prompt('author_name'),
     init.prompt('author_email'),
     init.prompt('author_url'),
-    init.prompt('launch_path'),
+    init.prompt('main', '/index.html'),
     init.prompt('transifex_slug'),
     init.prompt('default_locale', 'en')
   ], function(err, props) {
@@ -80,15 +82,21 @@ exports.template = function(grunt, init, done) {
             "tests",
             "dist"
         ];
-        pkg.main = "assets/index.html";
         pkg.private = true;
         pkg.dependencies = {};
         delete pkg.devDependencies;
+        delete pkg.title;
 
         if(pkg.licenses) {
             pkg.license = pkg.licenses;
             delete pkg.licenses;
         }
+
+        if(pkg.bugs) {
+            delete pkg.bugs;
+        }
+
+        return pkg;
     });
 
     // All done!
