@@ -1,6 +1,6 @@
 # grunt-init-openwebapp
 
-> Initialize a boilerplate webapp with [grunt-init][].
+> Initialize a boilerplate webapp with [grunt-init][] with support for transifex, bower dependencies and basic validation.
 
 [grunt-init]: http://gruntjs.com/project-scaffolding
 
