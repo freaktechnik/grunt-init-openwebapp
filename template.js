@@ -15,7 +15,9 @@ exports.notes = '';
 
 // Template-specific notes to be displayed after question prompts.
 exports.after = 'You should now install project dependencies with _npm ' +
-  'install_. After that, you may execute project tasks with _grunt_. For ' +
+  'install_. MAke sure your transifex configuration is correct and add ' + 
+  'bower dependencies to the bower.json, then run _bower install_. '+
+  'After that, you may execute project tasks with _grunt_. For ' +
   'more information about installing and configuring Grunt, please see ' +
   'the Getting Started guide:' +
   '\n\n' +
