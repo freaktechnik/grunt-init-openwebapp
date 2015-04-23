@@ -31,3 +31,8 @@ _Note that this template will generate files in the current directory, so be
 sure to change to a new directory first if you don't want to overwrite existing
 files._
 
+The generated content will be usable as-is, though be careful to set the transifex parameters correctly during the setup.
+You can easily add-in other grunt tasks, like watch or ftp deployment, see [freaktechnik/mines.js][] as example.
+
+[freaktechnik/mines.js]: https://github.com/freaktechnik/mines.js
+
