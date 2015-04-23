@@ -1,5 +1,6 @@
 # grunt-init-openwebapp
-> Initialize a boilerplate webapp with [grunt init][].
+
+> Initialize a boilerplate webapp with [grunt-init][].
 
 [grunt-init]: http://gruntjs.com/project-scaffolding
 
