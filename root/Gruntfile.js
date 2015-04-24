@@ -270,8 +270,6 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('travis', ['build:packaged', 'compress:travis']);
-
     grunt.registerTask('dev', 'Build an unminified version of the app (use :web or :packaged)', function(env) {
         env = env || 'web';
 

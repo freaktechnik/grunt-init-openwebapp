@@ -5,8 +5,10 @@
 ## Getting Started
 Install the dependencies with: `npm install && bower install`
 
-You can create a web version of the app by just running `grunt`, or a packaged
-version using `grunt package`. For an unminifed web version use `grunt dev`.
+You can create a web version of the app by just running `grunt build:web`, or a packaged
+version using `grunt build:package`. For an unminifed web version use `grunt dev:web`.
+
+The default grunt targets further include `grunt test`, `grunt launch:simulator` and `grunt launch:device`. Plus there are unfinished deployment tasks.
 
 ## Download
 _(Coming soon)_
