@@ -62,7 +62,10 @@ exports.template = function(grunt, init, done) {
         "grunt-contrib-uglify": "~0.2.0",
         "grunt-transifex": "~0.1.1",
         "grunt-validate-webapp": "~0.1.0",
-        "grunt-webapp": "~0.3.0"
+        "grunt-webapp": "~0.3.0",
+        "grunt-firefoxos": "~0.1.2",
+        "fxos-deploy": "~0.3.2",
+        "fxos-connect": "~0.3.0"
     };
     props.npm_test = 'grunt test';
 
