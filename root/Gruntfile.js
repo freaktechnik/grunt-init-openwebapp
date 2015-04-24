@@ -207,6 +207,29 @@ module.exports = function(grunt) {
                 },
                 files: [{ '<%= distdir %>/manifest.webapp': 'manifest.webapp' }]
             }
+        },
+        ffospush: {
+            launch: {
+                appId: '<%= pkg.name %>',
+                zip: '<%= pkg.name %>-<%= pkg.version %>.zip'
+            }
+        },
+        watch: {
+            options: {
+                interrupt: true,
+                atBegin: true
+            },
+            web: {
+                options: {
+                    //livereload: true
+                },
+                files: ['assets/**/*', 'src/*', 'manifest.webapp', 'locales/en/*'],
+                tasks: 'dev'
+            },
+            packaged: {
+                files: ['assets/**/*', 'src/*', 'manifest.webapp', 'locales/en/*'],
+                tasks: 'launch:simulator'
+            }
         }
     });
 
@@ -223,6 +246,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-appcache');
     grunt.loadNpmTasks('grunt-webapp');
     grunt.loadNpmTasks('grunt-firefoxos');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Default task(s).
     grunt.registerTask('default', ['build:web']);
@@ -292,31 +316,43 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('open', function(target) {
+    grunt.registerTask('simulator', function() {
         var done = this.async();
+        connectSim({connect: true}).then(function(sim) {
+            return deploySim({
+                manifestURL: 'dist/manifest.webapp',
+                zip: grunt.config('pkg.name')+"-"+grunt.config('pkg.version')+".zip",
+                client: sim.client
+            }).then(function(appId) {
+                grunt.log.ok("Started simulator with app "+appId);
+                sim.client.addEventListener("end", done);
+            }, function(err) {
+                grunt.fail.warn(err);
+                done(false);
+            });
+        }, function(err) {
+            grunt.fail.warn(err);
+            done(false);
+        });
+    });
 
+    grunt.registerTask('open', function(target) {
         grunt.task.requires('dev:packaged');
 
         if(target == 'device') {
             grunt.task.run('ffospush');
-            done();
         }
         else {
-            connectSim({connect: true}).then(function(sim) {
-                return deploySim({
-                    manifestURL: 'dist/manifest.webapp',
-                    zip: grunt.config('pkg.name')+"-"+grunt.config('pkg.version')+".zip",
-                    client: sim.client
-                }).then(function(appId) {
-                    grunt.log.ok("Started simulator with app "+appId);
-                    sim.client.addEventListener("end", done);
-                }, function(err) {
-                    grunt.fail.warn(err);
-                    done(false);
-                });
+            grunt.util.spawn({
+                grunt: true,
+                opts: {
+                    stdio: 'inherit'
+                },
+                args: ['simulator']
             }, function(err) {
-                grunt.fail.warn(err);
-                done(false);
+                if(err) {
+                    grunt.fail.warn(err);
+                }
             });
         }
     });

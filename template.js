@@ -60,6 +60,7 @@ exports.template = function(grunt, init, done) {
         "grunt-contrib-cssmin": "~0.12.2",
         "grunt-contrib-jshint": "~0.6.0",
         "grunt-contrib-uglify": "~0.2.0",
+        "grunt-contrib-watch": "~0.6.1",
         "grunt-transifex": "~0.1.1",
         "grunt-validate-webapp": "~0.1.0",
         "grunt-webapp": "~0.3.0",
