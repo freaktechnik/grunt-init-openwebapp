@@ -223,11 +223,11 @@ module.exports = function(grunt) {
                 options: {
                     //livereload: true
                 },
-                files: ['assets/**/*', 'src/*', 'manifest.webapp', 'locales/en/*'],
+                files: ['assets/**/*', 'manifest.webapp', 'locales/{%= default_locale %}/*'],
                 tasks: 'dev'
             },
             packaged: {
-                files: ['assets/**/*', 'src/*', 'manifest.webapp', 'locales/en/*'],
+                files: ['assets/**/*', 'manifest.webapp', 'locales/{%= default_locale %}/*'],
                 tasks: 'launch:simulator'
             }
         }
