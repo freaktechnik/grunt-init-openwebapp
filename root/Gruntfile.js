@@ -290,11 +290,13 @@ module.exports = function(grunt) {
 
     grunt.registerTask('deploy', 'Deoply the app, targets are :web or :packaged', function(env) {
         env = env || 'web';
+
+        grunt.task.run('build:'+env);
+
         if(env == 'packaged') {
             grunt.fail.warn("Can't deploy packaged apps yet.");
         }
         else {
-            grunt.task.run('build:web');
             grunt.fail.warn("No actual deployment strategy for web defined");
             // example:
             // grunt.task.run('ftp-deploy:production');
@@ -303,8 +305,11 @@ module.exports = function(grunt) {
 
     grunt.registerTask('stage', 'Publish the app to staging with unminified sources (only :web for now)', function(env) {
         env = env || 'web';
+
+        grunt.task.run('transifex');
+        grunt.task.run('dev:'+env);
+
         if(env == 'web') {
-            grunt.task.run('dev:web');
             grunt.fail.warn("No actual deployment strategy for web defined");
             // example:
             // grunt.task.run('ftp-deploy:stage');
