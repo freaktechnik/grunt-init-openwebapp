@@ -314,9 +314,17 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('simulator', function() {
+    grunt.registerTask('simulator', function(version) {
         var done = this.async();
-        connectSim({connect: true}).then(function(sim) {
+        var opts = {
+            connect: true
+        };
+
+        if(version != "undefined") {
+            opts.release = [version];
+        }
+
+        connectSim(opts).then(function(sim) {
             return deploySim({
                 manifestURL: 'dist/manifest.webapp',
                 zip: grunt.config('pkg.name')+"-"+grunt.config('pkg.version')+".zip",
@@ -334,7 +342,7 @@ module.exports = function(grunt) {
         });
     });
 
-    grunt.registerTask('open', function(target) {
+    grunt.registerTask('open', function(target, version) {
         grunt.task.requires('dev:packaged');
 
         if(target == 'device') {
@@ -346,7 +354,7 @@ module.exports = function(grunt) {
                 opts: {
                     stdio: 'inherit'
                 },
-                args: ['simulator']
+                args: ['simulator:'+version]
             }, function(err) {
                 if(err) {
                     grunt.fail.warn(err);
@@ -355,11 +363,11 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('launch', 'Launch a test version of the app on a FxOS Device or Simulator (use :device or :simulator)', function(target) {
+    grunt.registerTask('launch', 'Launch a test version of the app on a FxOS Device or Simulator (use :device or :simulator)', function(target, version) {
         target = target || 'simulator';
 
         grunt.task.run('dev:packaged');
 
-        grunt.task.run('open:'+target);
+        grunt.task.run('open:'+target+":"+version);
     });
 };
