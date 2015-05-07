@@ -61,8 +61,11 @@ The template initializes with an `app.properties` and an `manifest.json` file fo
 #### File Headers
 All minified, concatenated or uglified files get a default header containing the app name, author and licenses. It can be customized in a Gruntfile config property.
 
-#### Bower components
+#### Bower Components
 The Gruntfile is prepared with special rules for the gaia-fonts bower component. For all other components the files specified in the `main` property of the `bower.json` are copied.
+
+#### Grunt Targets
+Most grunt targets are documented in the `README.md` generated from this template.
 
 [freaktechnik/mines.js]: https://github.com/freaktechnik/mines.js
 
