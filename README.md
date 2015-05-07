@@ -37,8 +37,8 @@ You can easily add-in other grunt tasks, like watch or ftp deployment, see [frea
 ### Resulting structure
 
 The Gruntfile coming with this template uses the following asset structure, relative to the project's root:
-type         | source                      | destination
---------------------------------------------------------------------
+ type        | source                      | destination
+-------------|-----------------------------|------------------------
 HTML         | `assets/`                   | `dist/`
 Images       | `assets/images/`            | `dist/images/`
 Scripts      | `assets/scripts/*.js`       | `dist/scripts/*.min.js`
