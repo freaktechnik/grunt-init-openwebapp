@@ -2,7 +2,26 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         distdir: 'dist',
-        localedir: 'locales',
+        // Subfolders of the distdir where stuff gets placed
+        dist: {
+            html: '/',
+            image: '/images/',
+            locale: '/locales/',
+            script: '/scripts/',
+            bower: '/vendor/',
+            style: '/styles/'
+        }
+        // Asset directory locations
+        assetdir: 'assets',
+        src: {
+            //!!! If you move any of these directories out of assetdir (With the exception of locales) watch will break, so adjust it, too!
+            html: '<%= assetdir %>',
+            script: '<%= assetdir %>/scripts',
+            style: '<%= assetdir %>/styles',
+            image: '<%= assetdir %>/images',
+            font: '<%= assetdir %>/fonts',
+            locale: 'locales'
+        },
         pkg: grunt.file.readJSON('package.json'),
         banner:
             '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -20,9 +39,9 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'assets/scripts',
+                        cwd: '<%= src.script %>',
                         src: '**/*.js',
-                        dest: '<%= distdir %>/scripts',
+                        dest: '<%= distdir %><%= dist.script %>',
                         ext: '.min.js'
                     }
                 ]
@@ -32,9 +51,9 @@ module.exports = function(grunt) {
             build: {
                 files: [{
                     expand: true,
-                    cwd: 'assets/styles',
+                    cwd: '<%= src.style %>',
                     src: ['*.css'],
-                    dest: '<%= distdir %>/styles/',
+                    dest: '<%= distdir %><%= dist.style %>',
                     ext: '.css'
                 }]
             }
@@ -42,13 +61,13 @@ module.exports = function(grunt) {
         jshint: {
             test: {
                 files: {
-                    src: ['Gruntfile.js', 'assets/scripts/**/*.js', 'test/**/*.js']
+                    src: ['Gruntfile.js', '<%= src.script %>/**/*.js', 'test/**/*.js']
                 }
             }
         },
         bower: {
             build: {
-                dest: '<%= distdir %>/vendor/',
+                dest: '<%= distdir %><%= dist.bower %>',
                 options: {
                     expand: true,
                     packageSpecific: {
@@ -67,16 +86,16 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'assets/scripts',
+                        cwd: '<%= src.script %>',
                         src: '**/*.js',
-                        dest: '<%= distdir %>/scripts',
+                        dest: '<%= distdir %><%= dist.script %>',
                         ext: '.min.js'
                     },
                     {
                         expand: true,
-                        cwd: 'assets/styles',
+                        cwd: '<%= src.style %>',
                         src: ['*.css'],
-                        dest: '<%= distdir %>/styles',
+                        dest: '<%= distdir %><%= dist.style %>',
                         ext: '.css'
                     }
                 ]
@@ -90,9 +109,9 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'assets',
+                        cwd: '<%= src.html %>',
                         src: ['*.html'],
-                        dest: '<%= distdir %>'
+                        dest: '<%= distdir %><%= dist.html %>'
                     }
                 ]
             },
@@ -100,21 +119,21 @@ module.exports = function(grunt) {
                files: [
                     {
                         expand: true,
-                        cwd: '<%= localedir %>',
+                        cwd: '<%= src.locale %>',
                         src: ['**'],
-                        dest: '<%= distdir %>/<%= localedir %>'
+                        dest: '<%= distdir %><%= dist.locale %>'
                     },
                     {
                         expand: true,
-                        cwd: 'assets/fonts',
+                        cwd: '<%= src.font %>',
                         src: ['**'],
-                        dest: '<%= distdir %>/fonts'
+                        dest: '<%= distdir %><%= dist.font %>'
                     },
                     {
                         expand: true,
-                        cwd: 'assets/images',
+                        cwd: '<%= src.image %>',
                         src: ['**/*.png', '**/*.svg', '**/*.jpg', '**/*.gif'],
-                        dest: '<%= distdir %>/images'
+                        dest: '<%= distdir %><%= dist.image %>'
                     }
                 ]
             }
@@ -122,7 +141,7 @@ module.exports = function(grunt) {
         transifex: {
             build_properties: {
                 options: {
-                    targetDir: '<%= localedir %>',
+                    targetDir: '<%= src.locale %>',
                     project: '{%= transifex_slug %}',
                     resources: ['app'],
                     filename: '_lang_/_resource_.properties',
@@ -138,7 +157,7 @@ module.exports = function(grunt) {
             },
             build_json: {
                 options: {
-                    targetDir: '<%= localedir %>',
+                    targetDir: '<%= src.locale %>',
                     resources: ['manifest'],
                     filename: '_lang_/_resource_.json',
                     project: '{%= transifex_slug %}',
@@ -177,7 +196,7 @@ module.exports = function(grunt) {
                 force: false
             },
             main: {
-                src: 'assets/*.html'
+                src: '<%= src.html %>/*.html'
             }
         },
         appcache: {
@@ -191,9 +210,9 @@ module.exports = function(grunt) {
         },
         webapp: {
             options: {
-                localeDir: '<%= localedir %>',
-                icons: 'assets/images/icon-*.png',
-                iconsTarget: 'images/icon-{size}.png'
+                localeDir: '<%= src.locale %>',
+                icons: '<%= src.image %>/icon-*.png',
+                iconsTarget: '<%= dest.image %>icon-{size}.png'
             },
             web: {
                 options: {
@@ -223,11 +242,11 @@ module.exports = function(grunt) {
                 options: {
                     //livereload: true
                 },
-                files: ['assets/**/*', 'manifest.webapp', 'locales/{%= default_locale %}/*'],
+                files: ['<%= assetdir %>/**/*', 'manifest.webapp', '<%= src.locale %>/{%= default_locale %}/*'],
                 tasks: 'dev'
             },
             packaged: {
-                files: ['assets/**/*', 'manifest.webapp', 'locales/{%= default_locale %}/*'],
+                files: ['<%= assetdir %>/**/*', 'manifest.webapp', '<%= src.locale %>/{%= default_locale %}/*'],
                 tasks: 'launch:simulator'
             }
         }

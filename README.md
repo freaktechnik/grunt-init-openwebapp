@@ -34,5 +34,26 @@ files._
 The generated content will be usable as-is, though be careful to set the transifex parameters correctly during the setup.
 You can easily add-in other grunt tasks, like watch or ftp deployment, see [freaktechnik/mines.js][] as example.
 
+### Resulting structure
+
+The Gruntfile coming with this template uses the following asset structure, relative to the project's root:
+type         | source                      | destination
+--------------------------------------------------------------------
+HTML         | `assets/`                   | `dist/`
+Images       | `assets/images/`            | `dist/images/`
+Scripts      | `assets/scripts/*.js`       | `dist/scripts/*.min.js`
+Stylesheets  | `assets/styles/*.css`       | `dist/styles/*.css`
+Fonts        | `assets/fonts/`             | `dist/fonts/`
+Bower        | The bower components folder | `dist/vendor/`
+Transaltions | `locales/`                  | `dist/locales/`
+
+### Special functions
+
+#### HTML
+You can use the special `{{locales}}` placeholder within your HTML files, which will be replaced with a comma separated list of available locales. For example: `en,de,fr,rm,el`.
+
+#### Localization
+#### File Headers
+
 [freaktechnik/mines.js]: https://github.com/freaktechnik/mines.js
 
