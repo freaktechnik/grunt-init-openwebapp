@@ -34,7 +34,7 @@ files._
 The generated content will be usable as-is, though be careful to set the transifex parameters correctly during the setup.
 You can easily add-in other grunt tasks, like watch or ftp deployment, see [freaktechnik/mines.js][] as example.
 
-### Resulting structure
+### Resulting Structure
 
 The Gruntfile coming with this template uses the following asset structure, relative to the project's root:
 
@@ -50,7 +50,7 @@ Transaltions | `locales/`                  | `dist/locales/`
 
 These are easily adjustable within the first few lines of the Gruntfile.
 
-### Special functions
+### Special Functions
 
 #### HTML
 You can use the special `{{locales}}` placeholder within your HTML files, which will be replaced with a comma separated list of available locales. For example: `en,de,fr,rm,el`.
