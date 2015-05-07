@@ -47,13 +47,18 @@ Fonts        | `assets/fonts/`             | `dist/fonts/`
 Bower        | The bower components folder | `dist/vendor/`
 Transaltions | `locales/`                  | `dist/locales/`
 
+These are easily adjustable within the first few lines of the Gruntfile.
+
 ### Special functions
 
 #### HTML
 You can use the special `{{locales}}` placeholder within your HTML files, which will be replaced with a comma separated list of available locales. For example: `en,de,fr,rm,el`.
 
 #### Localization
+The template initializes with an app.properties and an manifest.json file for the default language specified. The transifex resources are called app and manifest respectively.
+
 #### File Headers
+All minified, concatenated or uglified files get a default header containing the app name, author and licenses. It can be customized in a Gruntfile config property.
 
 [freaktechnik/mines.js]: https://github.com/freaktechnik/mines.js
 
