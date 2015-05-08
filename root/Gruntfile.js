@@ -10,7 +10,7 @@ module.exports = function(grunt) {
             script: '/scripts/',
             bower: '/vendor/',
             style: '/styles/'
-        }
+        },
         // Asset directory locations
         assetdir: 'assets',
         src: {
@@ -212,7 +212,7 @@ module.exports = function(grunt) {
             options: {
                 localeDir: '<%= src.locale %>',
                 icons: '<%= src.image %>/icon-*.png',
-                iconsTarget: '<%= dest.image %>icon-{size}.png'
+                iconsTarget: '<%= dist.image %>icon-{size}.png'
             },
             web: {
                 options: {
