@@ -249,6 +249,24 @@ module.exports = function(grunt) {
                 files: ['<%= assetdir %>/**/*', 'manifest.webapp', '<%= src.locale %>/{%= default_locale %}/*'],
                 tasks: 'launch:simulator'
             }
+        },
+        marketplace: {
+            options: {
+                consumerKey: '', //TODO
+                consumerSecret: '' //TODO
+            },
+            packaged: {
+                options: {
+                    target: "packaged"
+                },
+                files: ['<%= pkg.name %>-<%= pkg.version %>.zip']
+            },
+            web: {
+                options: {
+                    target: "manifest"
+                },
+                files: ['<%= distdir %>/manifest.webapp']
+            }
         }
     });
 
@@ -266,6 +284,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-webapp');
     grunt.loadNpmTasks('grunt-firefoxos');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-marketplace');
 
     // Default task(s).
     grunt.registerTask('default', ['build:web']);
@@ -313,12 +332,13 @@ module.exports = function(grunt) {
         grunt.task.run('build:'+env);
 
         if(env == 'packaged') {
-            grunt.fail.warn("Can't deploy packaged apps yet.");
+            grunt.task.run('marketplace');
         }
         else {
             grunt.fail.warn("No actual deployment strategy for web defined");
             // example:
             // grunt.task.run('ftp-deploy:production');
+            // grunt.task.run('marketplace:web');
         }
     });
 
