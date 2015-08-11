@@ -1,21 +1,8 @@
 <!DOCTYPE html>
 <html manifest="manifest.appcache" lang="{%= default_locale %}">
     <head>
-        <meta charset="utf-8">
+        <!-- @include head.html -->
         <title data-l10n-id="title">{%= title %}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <link rel="icon" sizes="128x128" type="image/png" href="images/icon-128.png">
-
-        <meta name="defaultLanguage" content="{%= default_locale %}">
-        <meta name="availableLanguages" content="{{locales}}">
-
-        <link rel="localization" href="locales/{locale}/app.properties">
-        <script type="application/javascript" src="scripts/l10n.min.js"></script>
-
-        <link rel="stylesheet" type="text/css" href="styles/style.css">
-
-        <script type="application/javascript" src="scripts/script.min.js"></script>
     </head>
     <body role="application">
         <!-- your app content goes here -->

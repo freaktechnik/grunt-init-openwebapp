@@ -66,6 +66,7 @@ exports.template = function(grunt, init, done) {
         "grunt-webapp": "~0.3.0",
         "grunt-firefoxos": "~0.1.2",
         "grunt-marketplace": "~0.1.1",
+        "grunt-preprocess": "^5.0.1",
         "fxos-deploy": "~0.3.2",
         "fxos-connect": "~0.3.0"
     };

@@ -1,6 +1,8 @@
 module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
+        // The name pattern of the images that should be considered icons. The * should be the size of the icon. Note that the head.html preprocessing file doesn't use this pattern for naming.
+        iconFile: 'icon-*.png',
         distdir: 'dist',
         // Subfolders of the distdir where stuff gets placed
         dist: {
@@ -9,7 +11,9 @@ module.exports = function(grunt) {
             locale: '/locales/',
             script: '/scripts/',
             bower: '/vendor/',
-            style: '/styles/'
+            style: '/styles/',
+            font: '/fonts/',
+            icon: '<%= dist.images %><%= iconFile %>'
         },
         // Asset directory locations
         assetdir: 'assets',
@@ -20,7 +24,9 @@ module.exports = function(grunt) {
             style: '<%= assetdir %>/styles',
             image: '<%= assetdir %>/images',
             font: '<%= assetdir %>/fonts',
-            locale: 'locales'
+            locale: 'locales',
+            icon: '<%= src.images %>/<%= iconFile %>',
+            include: '<%= assetdir %>/include'
         },
         pkg: grunt.file.readJSON('package.json'),
         banner:
@@ -28,9 +34,9 @@ module.exports = function(grunt) {
             '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
             ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>;\n' +
             ' * Licensed under the <%= _.pluck(pkg.licenses, "type").join(", ") %>\n */\n',
-        locales: function() {
-            return grunt.file.expand(grunt.config('localedir')+"/*").join(",").replace(new RegExp(grunt.config('localedir')+"/", "g"), "");
-        },
+        locales: '<%= grunt.file.expand({cwd:grunt.config("src.locale")}, "*").join(",") %>',
+        // This lists the sizes of the icon files for the head preprocessing.
+        iconSizes: '<%= JSON.stringify(grunt.file.expand({cwd: grunt.config("src.image")}, grunt.config("iconFile")).map(function(fn) {return fn.match(new RegExp(grunt.config("iconFile").replace("*", "([0-9]+)")))[1];})) %>"
         uglify: {
             options: {
                 banner: '<%= banner %>'
@@ -97,21 +103,6 @@ module.exports = function(grunt) {
                         src: ['*.css'],
                         dest: '<%= distdir %><%= dist.style %>',
                         ext: '.css'
-                    }
-                ]
-            },
-            html: {
-                options: {
-                    process: function(file) {
-                        return file.replace("{{locales}}", grunt.config('locales'));
-                    }
-                },
-                files: [
-                    {
-                        expand: true,
-                        cwd: '<%= src.html %>',
-                        src: ['*.html'],
-                        dest: '<%= distdir %><%= dist.html %>'
                     }
                 ]
             },
@@ -196,7 +187,7 @@ module.exports = function(grunt) {
                 force: false
             },
             main: {
-                src: '<%= src.html %>/*.html'
+                src: '<%= distdir %><%= dist.html %>/*.html'
             }
         },
         appcache: {
@@ -211,8 +202,8 @@ module.exports = function(grunt) {
         webapp: {
             options: {
                 localeDir: '<%= src.locale %>',
-                icons: '<%= src.image %>/icon-*.png',
-                iconsTarget: '<%= dist.image %>icon-{size}.png'
+                icons: '<%= src.icon %>',
+                iconsTarget: '<%= grunt.config("dist.icon").replace("*", "{size}") %>'
             },
             web: {
                 options: {
@@ -267,6 +258,31 @@ module.exports = function(grunt) {
                 },
                 files: ['<%= distdir %>/manifest.webapp']
             }
+        },
+        preprocess: {
+            options: {
+                srcDir: '<%= src.include %>',
+                context: {
+                    SCRIPT_DIR: '<%= dist.script %>',
+                    STYLE_DIR: '<%= dist.style %>',
+                    FONT_DIR: '<%= dist.font %>',
+                    IMAGE_DIR: '<%= dist.image %>',
+                    LOCALE_DIR: '<%= dist.locale %>',
+                    HTML_DIR: '<%= dist.html %>',
+                    VENDOR_DIR: '<%= dist.bower %>',
+                    LOCALES: '<%= locales %>',
+                    ICON_SIZES: '<%= iconSizes %>',
+                    ICON_NAME: function(size) {
+                        return grunt.config('dist.icon').replace('*', size);
+                    }
+                }
+            },
+            html: {
+                expand: true,
+                cwd: '<%= src.html %>',
+                src: ['*.html'],
+                dest: '<%= distdir %><%= dist.html %>'
+            }
         }
     });
 
@@ -285,6 +301,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-firefoxos');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-marketplace');
+    grunt.loadNpmTasks('grunt-preprocess');
 
     // Default task(s).
     grunt.registerTask('default', ['build:web']);
@@ -296,7 +313,7 @@ module.exports = function(grunt) {
         grunt.task.run('uglify');
         grunt.task.run('bower');
         grunt.task.run('cssmin');
-        grunt.task.run('copy:html');
+        grunt.task.run('preprocess:html');
         grunt.task.run('copy:build');
         grunt.task.run('webapp:'+env);
 
@@ -313,7 +330,7 @@ module.exports = function(grunt) {
 
         grunt.task.run('bower');
         grunt.task.run('copy:dev');
-        grunt.task.run('copy:html');
+        grunt.task.run('preprocess:html');
         grunt.task.run('copy:build');
         grunt.task.run('webapp:'+env);
         if(env == 'packaged') {
@@ -324,7 +341,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('test', 'Run tests and validations', ['webapp:packaged', 'copy:build', 'jshint', 'validatewebapp', 'accessibility', 'clean']);
+    grunt.registerTask('test', 'Run tests and validations', ['webapp:packaged', 'copy:build', 'jshint', 'validatewebapp', 'preprocess:html', 'accessibility', 'clean']);
 
     grunt.registerTask('deploy', 'Deoply the app, targets are :web or :packaged', function(env) {
         env = env || 'web';
@@ -393,17 +410,7 @@ module.exports = function(grunt) {
             grunt.task.run('ffospush');
         }
         else {
-            grunt.util.spawn({
-                grunt: true,
-                opts: {
-                    stdio: 'inherit'
-                },
-                args: ['simulator:'+version]
-            }, function(err) {
-                if(err) {
-                    grunt.fail.warn(err);
-                }
-            });
+            grunt.task.run('simulator:'+version);
         }
     });
 

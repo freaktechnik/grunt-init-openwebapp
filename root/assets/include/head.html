@@ -1,0 +1,15 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- @foreach SIZE in ICON_SIZES -->
+<link rel="icon" sizes="$SIZEx$SIZE" type="image/png" href="<!-- @exec ICON_NAME('$SIZE') -->">
+<!-- @endfor -->
+<meta name="defaultLanguage" content="{%= default_locale %}">
+<meta name="availableLanguages" content="<!-- @echo LOCALES -->">
+
+<link rel="localization" href="<!-- @echo LOCALE_DIR -->{locale}/app.properties">
+<script type="application/javascript" src="<!-- @echo SCRIPT_DIR -->l10n.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="<!-- @echo STYLE_DIR -->style.css">
+
+<script type="application/javascript" src="<!-- @echo SCRIPT_DIR -->script.min.js"></script>
