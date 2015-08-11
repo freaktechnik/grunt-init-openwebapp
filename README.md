@@ -12,7 +12,7 @@ directory. It's recommended that you use git to clone this template into that
 directory, as follows:
 
 ```
-git clone https://github.com/freaktechnik/grunt-init-openwebapp.git ~/.grunt-init/openwebapp
+git clone --depth 1 https://github.com/freaktechnik/grunt-init-openwebapp.git ~/.grunt-init/openwebapp
 ```
 
 _(Windows users, see [the documentation][grunt-init] for the correct
