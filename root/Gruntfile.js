@@ -13,7 +13,7 @@ module.exports = function(grunt) {
             bower: '/vendor/',
             style: '/styles/',
             font: '/fonts/',
-            icon: '<%= dist.images %><%= iconFile %>'
+            icon: '<%= dist.image %><%= iconFile %>'
         },
         // Asset directory locations
         assetdir: 'assets',
@@ -25,7 +25,7 @@ module.exports = function(grunt) {
             image: '<%= assetdir %>/images',
             font: '<%= assetdir %>/fonts',
             locale: 'locales',
-            icon: '<%= src.images %>/<%= iconFile %>',
+            icon: '<%= src.image %>/<%= iconFile %>',
             include: '<%= assetdir %>/include'
         },
         pkg: grunt.file.readJSON('package.json'),
@@ -34,9 +34,10 @@ module.exports = function(grunt) {
             '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
             ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>;\n' +
             ' * Licensed under the <%= _.pluck(pkg.licenses, "type").join(", ") %>\n */\n',
+        // These JS statements are expanded after the config was set, so the used config values are defined.
         locales: '<%= grunt.file.expand({cwd:grunt.config("src.locale")}, "*").join(",") %>',
         // This lists the sizes of the icon files for the head preprocessing.
-        iconSizes: '<%= JSON.stringify(grunt.file.expand({cwd: grunt.config("src.image")}, grunt.config("iconFile")).map(function(fn) {return fn.match(new RegExp(grunt.config("iconFile").replace("*", "([0-9]+)")))[1];})) %>"
+        iconSizes: '<%= JSON.stringify(grunt.file.expand({cwd: grunt.config("src.image")}, grunt.config("iconFile")).map(function(fn) {return fn.match(new RegExp(grunt.config("iconFile").replace("*", "([0-9]+)")))[1];})) %>',
         uglify: {
             options: {
                 banner: '<%= banner %>'
@@ -187,7 +188,9 @@ module.exports = function(grunt) {
                 force: false
             },
             main: {
-                src: '<%= distdir %><%= dist.html %>/*.html'
+                expand: true,
+                cwd: '<%= distdir %><%= dist.html %>',
+                src: '*.html'
             }
         },
         appcache: {
