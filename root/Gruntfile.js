@@ -413,6 +413,9 @@ module.exports = function(grunt) {
             grunt.task.run('ffospush');
         }
         else {
+            if((!version || version == "undefined") && target != 'simulator')
+                version = target;
+
             grunt.task.run('simulator:'+version);
         }
     });
