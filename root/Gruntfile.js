@@ -35,7 +35,7 @@ module.exports = function(grunt) {
         banner:
             '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
             '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
-            ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.athor.name || pkg.author %>;\n' +
+            ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name || pkg.author %>;\n' +
             ' * Licensed under the <%= _.pluck(pkg.licenses, "type").join(", ") %>\n */\n',
         // These JS statements are expanded after the config was set, so the used config values are defined.
         locales: '<%= grunt.file.expand({cwd:grunt.config("src.locale")}, "*").join(",") %>',
