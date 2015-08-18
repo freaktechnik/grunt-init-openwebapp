@@ -53,7 +53,20 @@ These are easily adjustable within the first few lines of the Gruntfile.
 ### Special Functions
 
 #### HTML
-You can use the special `{{locales}}` placeholder within your HTML files, which will be replaced with a comma separated list of available locales. For example: `en,de,fr,rm,el`.
+All HTML files in the html directory are preprocessed with the prerocess node module. The default files already contain directives that get prerocessed. The follwing variables are available (more can be added in the Gruntfile):
+
+ name        | description
+-------------|--------------------------------------------------------------------
+`SCRIPT_DIR` | The javascript file destination folder.
+`STYLE_DIR`  | The css file destination folder.
+`FONT_DIR`   | The font destination folder.
+`IMAGE_DIR`  | The image destination folder.
+`LOCALE_DIR` | The translation file destination folder.
+`HTML_DIR`   | The HTML file destination folder.
+`VENDOR_DIR` | The bower components destination folder.
+`LOCALES`    | A comma separated list of available languages.
+`ICON_SIZES` | An array of available icon sizes.
+`ICON_NAME`  | A function that returns the icon file name with the specified size.
 
 #### Localization
 The template initializes with an `app.properties` and an `manifest.json` file for the default language specified. The transifex resources are called "app" and "manifest" respectively.
