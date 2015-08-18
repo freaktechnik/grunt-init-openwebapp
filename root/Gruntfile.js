@@ -1,4 +1,7 @@
 module.exports = function(grunt) {
+    var bowerDevDeps = Object.keys(grunt.file.readJSON('bower.json').devDependencies);
+    // If your bower dev deps have dependencies, you might want to add them to the bowerDevDeps array here.
+
     // Project configuration.
     grunt.initConfig({
         // The name pattern of the images that should be considered icons. The * should be the size of the icon. Note that the head.html preprocessing file doesn't use this pattern for naming.
@@ -32,7 +35,7 @@ module.exports = function(grunt) {
         banner:
             '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
             '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
-            ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>;\n' +
+            ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.athor.name || pkg.author %>;\n' +
             ' * Licensed under the <%= _.pluck(pkg.licenses, "type").join(", ") %>\n */\n',
         // These JS statements are expanded after the config was set, so the used config values are defined.
         locales: '<%= grunt.file.expand({cwd:grunt.config("src.locale")}, "*").join(",") %>',
@@ -77,6 +80,7 @@ module.exports = function(grunt) {
                 dest: '<%= distdir %><%= dist.bower %>',
                 options: {
                     expand: true,
+                    ignorePackages: bowerDevDeps,
                     packageSpecific: {
                         'gaia-fonts': {
                             files: [
@@ -126,6 +130,12 @@ module.exports = function(grunt) {
                         cwd: '<%= src.image %>',
                         src: ['**/*.png', '**/*.svg', '**/*.jpg', '**/*.gif'],
                         dest: '<%= distdir %><%= dist.image %>'
+                    },
+                    {
+                        expand: true,
+                        cwd: '.',
+                        src: ['*LICENSE*'],
+                        dest: '<%= distdir %>'
                     }
                 ]
             }
