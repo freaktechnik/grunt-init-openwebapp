@@ -53,7 +53,7 @@ These are easily adjustable within the first few lines of the Gruntfile.
 ### Special Functions
 
 #### HTML
-All HTML files in the html directory are preprocessed with the prerocess node module. The default files already contain directives that get prerocessed. The follwing variables are available (more can be added in the Gruntfile):
+All HTML files in the html directory are preprocessed with the [preprocess node module](https://github.com/jsoverson/preprocess/). The default files already contain directives that get prerocessed. The follwing variables are available (more can be added in the Gruntfile):
 
  name        | description
 -------------|--------------------------------------------------------------------
