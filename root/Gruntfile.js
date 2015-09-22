@@ -195,6 +195,9 @@ module.exports = function(grunt) {
                     warning: true,
                     error: true
                 },
+                /* ignore: [
+                    id of the rule as string (WCAG2A.Principle1. etc.)
+                ], */
                 force: false
             },
             main: {
@@ -296,6 +299,19 @@ module.exports = function(grunt) {
                 src: ['*.html'],
                 dest: '<%= distdir %><%= dist.html %>'
             }
+        },
+        htmllint: {
+            test: {
+                options: {
+                    ignore: [
+                        /Bad value “localization” for attribute “rel” on element “link”/,
+                        'Bad value ”<%= dist.locale %>{locale}/app.properties” for attribute “href” on element “link”: Illegal character in path segment: not a URL code point.',
+                    ]
+                },
+                files: {
+                    src: [ '<%= distdir %><%= dist.html %>*.html' ]
+                }
+            }
         }
     });
 
@@ -315,6 +331,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-marketplace');
     grunt.loadNpmTasks('grunt-preprocess');
+    grunt.loadNpmTasks('grunt-html');
 
     // Default task(s).
     grunt.registerTask('default', ['build:web']);
@@ -354,7 +371,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('test', 'Run tests and validations', ['webapp:packaged', 'copy:build', 'jshint', 'validatewebapp', 'preprocess:html', 'accessibility', 'clean']);
+    grunt.registerTask('test', 'Run tests and validations', ['webapp:packaged', 'copy:build', 'jshint', 'validatewebapp', 'preprocess:html', 'htmllint', 'accessibility', 'clean']);
 
     grunt.registerTask('deploy', 'Deoply the app, targets are :web or :packaged', function(env) {
         env = env || 'web';
