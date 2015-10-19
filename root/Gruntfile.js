@@ -82,6 +82,16 @@ module.exports = function(grunt) {
                     expand: true,
                     ignorePackages: bowerDevDeps,
                     packageSpecific: {
+                        'fira': {
+                            files: [
+                                'eot/FiraSans-*',
+                                'eot/FiraMono-*',
+                                'woff/FiraSans-*',
+                                'woff/FiraMono-*',
+                                'ttf/*',
+                                'fira.css'
+                            ]
+                        },
                         'gaia-fonts': {
                             files: [
                                 'fonts/**',
@@ -116,7 +126,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd: '<%= src.locale %>',
-                        src: ['**'],
+                        src: ['*/app.properties'],
                         dest: '<%= distdir %><%= dist.locale %>'
                     },
                     {
